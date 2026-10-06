@@ -1,0 +1,10 @@
+# @package _global_
+training:
+  epochs: 1
+  batch_size: 32
+  num_workers: 2
+logging:
+  use_wandb: false
+data:
+  max_train_examples: 256
+  max_val_examples: 128

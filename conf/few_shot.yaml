@@ -1,0 +1,10 @@
+run_dir: ???
+device: cuda
+shots: [1, 5, 10]
+seed: 42
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: outputs/few_shot/${now:%Y-%m-%d_%H-%M-%S}

@@ -1,0 +1,10 @@
+run_dir: ???
+device: cuda
+batch_size: 64
+num_workers: 4
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: outputs/evaluation/${now:%Y-%m-%d_%H-%M-%S}

@@ -1,0 +1,38 @@
+defaults:
+  - model: resnet18
+  - strategy: linear_probe
+  - data: full
+  - experiment: default
+  - _self_
+
+seed: 42
+device: cuda
+
+data_dir: ${hydra:runtime.cwd}/data
+
+run:
+  name: auto
+
+training:
+  epochs: 5
+  batch_size: 64
+  num_workers: 4
+  head_lr: 0.001
+  backbone_lr: 0.0001
+  weight_decay: 0.0001
+  amp: true
+
+logging:
+  use_wandb: true
+  project: cim-lab-2
+  entity: null
+  log_model_artifact: true
+
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: outputs/runs/${run.name}/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: outputs/multirun/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}_${strategy.name}_${data.view}
