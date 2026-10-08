@@ -19,11 +19,7 @@ By the end of the lab, you should be able to:
 - [Lab 0 setup and WSL guidance](https://github.com/ivorsimpson/cim-lab-0/blob/main/README.md)
 - [Lab 0 GitHub support](https://github.com/ivorsimpson/cim-lab-0/blob/main/docs/github-support.md)
 - [Lab 1 repository and workflow](https://github.com/ivorsimpson/cim-lab-1/)
-- [Oxford-IIIT Pet Dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/)
-- [Torchvision ResNet-18 documentation](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.resnet18.html)
-- [Hydra output-directory guidance](https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/)
-- [Weights & Biases quickstart](https://docs.wandb.ai/models/quickstart)
-- [Weights & Biases artifacts](https://docs.wandb.ai/models/artifacts)
+
 
 The dataset is downloaded automatically. ResNet-18 ImageNet weights are downloaded on first use.
 
@@ -93,15 +89,14 @@ Do not run large sweeps as it will take a long time. The core comparison is thre
 
 ### 1. Inspect the transfer-learning code
 
-Read these files in order:
+Start by reading:
 
 1. `src/cim_lab_2/models.py`
 2. `src/cim_lab_2/optim.py`
-3. `src/cim_lab_2/data.py`
-4. `src/cim_lab_2/metrics.py`
-5. `src/cim_lab_2/train.py`
 
 Search for `STUDENT TASK` to find the exact places where you should write or modify code.
+
+Take a look at `src/cim_lab_2/data.py`, `src/cim_lab_2/metrics.py` and `src/cim_lab_2/train.py`. You don't need to understand every detail, but make sure you understand their roles in the training and evaluation pipeline.
 
 ### 2. Linear probing
 
@@ -137,7 +132,14 @@ uv run python -m cim_lab_2.train \
   run.name=full_finetune
 ```
 
-Compare training time, validation accuracy and the generalisation gap with the previous runs.
+After completing all three runs, compare:
+
+- the number and proportion of trainable parameters;
+- training time;
+- validation accuracy;
+- the generalisation gap (difference between training and validation accuracy).
+
+Which performs best? Does training more parameters always improve validation accuracy?
 
 ### 5. Evaluate the task at two levels
 
@@ -151,13 +153,15 @@ The existing metrics code already reports:
 - macro-average breed accuracy;
 - a confusion matrix.
 
-Inspect the marked section in `metrics.py` and add one further diagnostic that helps explain uneven performance across breeds. Each run also saves a breed-named per-class accuracy plot and JSON file, plus a breed-labelled confusion matrix, making it easier to identify which breeds improve or deteriorate between views.
+Inspect the marked section in `metrics.py` and add one further diagnostic that helps explain uneven performance across breeds. 
+
+Each run also saves a breed-named per-class accuracy plot and JSON file, plus a breed-labelled confusion matrix.
 
 Ask: can a model perform well on cat-versus-dog while remaining poor at fine-grained breed recognition?
 
 ### 6. Investigate dataset dependence
 
-Repeat one transfer strategy using annotated head crops:
+Full images contain information about the animal's body and background, which may influence predictions. To test this, repeat one transfer strategy using annotated head crops:
 
 ```bash
 uv run python -m cim_lab_2.train \
@@ -182,9 +186,7 @@ Each run logs:
 - the complete resolved configuration;
 - train and validation loss curves;
 - breed and species accuracy;
-- learning rates;
-- trainable parameter count;
-- runtime;
+- learning rates,trainable parameter count and runtime;
 - the best checkpoint, configuration, per-breed results and plots as a model artifact.
 
 Use the W&B comparison view to compare your core runs. Before leaving, verify that the important runs and artifacts have synchronised successfully.
@@ -247,3 +249,11 @@ The dataset provides trimap segmentation annotations. Build a foreground-only vi
 ### Waterbirds
 
 Read about the Waterbirds benchmark as a stronger example of background correlation and group shift. Treat this as a conceptual extension; dataset plumbing is intentionally not included in the core lab.
+
+## Further Resources and Documentation
+
+- [Oxford-IIIT Pet Dataset](https://www.robots.ox.ac.uk/~vgg/data/pets/)
+- [Torchvision ResNet-18 documentation](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.resnet18.html)
+- [Hydra output-directory guidance](https://hydra.cc/docs/tutorials/basic/running_your_app/working_directory/)
+- [Weights & Biases quickstart](https://docs.wandb.ai/models/quickstart)
+- [Weights & Biases artifacts](https://docs.wandb.ai/models/artifacts)
