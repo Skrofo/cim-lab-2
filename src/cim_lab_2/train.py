@@ -74,9 +74,11 @@ def main(cfg: DictConfig):
     run_dir = Path(HydraConfig.get().runtime.output_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
     save_resolved_config(run_dir / "resolved_config.yaml", cfg)
-
+    
     device = torch.device(cfg.device if torch.cuda.is_available() else "cpu")
-    train_cfg = OmegaConf.merge(cfg.data, cfg.training)
+
+    train_cfg = OmegaConf.merge({**cfg.training, **cfg.model, **cfg.data})
+    print(train_cfg)
     train_loader, val_loader, class_to_species = build_loaders(train_cfg, cfg.data_dir)
     class_names = breed_names(train_loader.dataset.records)
 
