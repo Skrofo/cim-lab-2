@@ -1,0 +1,6 @@
+view: full
+image_size: 224
+val_fraction: 0.2
+split_seed: 42
+max_train_examples: null
+max_val_examples: null
