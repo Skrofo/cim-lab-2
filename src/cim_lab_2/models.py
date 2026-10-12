@@ -26,9 +26,12 @@ def configure_trainable_parameters(model: nn.Module, strategy: str) -> None:
 
     for parameter in model.parameters():
         parameter.requires_grad = False
+        print("trainable parameter 1")
+
 
     for parameter in model.fc.parameters():
         parameter.requires_grad = True
+        print("trainable parameter 2")
 
     if strategy in {"partial", "full"}:
         for parameter in model.layer4.parameters():
