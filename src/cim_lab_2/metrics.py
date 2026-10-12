@@ -47,4 +47,7 @@ class ClassificationAccumulator:
             "macro_breed_accuracy": float(np.nanmean(per_class)),
             "per_class_accuracy": per_class.tolist(),
             "confusion_matrix": matrix.tolist(),
+
+            "breed_accuracy_std": float(np.nanstd(per_class)),
+            "breed_min_accuracy": float(np.nanmin(per_class)),
         }
